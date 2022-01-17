@@ -1,3 +1,35 @@
-.conatiner {
+html {
+  background-color: rgb(230, 230, 230);
+}
+.container {
   display: grid;
+  margin: 0px 20%;
+  row-gap: 30px;
+}
+input {
+  display: block;
+  border-radius: 10px;
+  height: 20px;
+  border: 0px;
+}
+label {
+  display: block;
+  margin: auto;
+}
+
+.container > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+}
+input[type="number"] {
+  width: 50px;
+  margin: auto;
+}
+
+input[type="submit"] {
+  margin: 30px auto;
+  padding: 0.5em 1.5em 0.5em 1.5em;
+  background-color: rgb(34, 143, 227);
+  height: auto;
 }

@@ -10,15 +10,14 @@ def add_items(request):
         for item_no in range(1, 5):
             if request.POST["item" + str(item_no)] != "":
                 print(request.POST["item" + str(item_no)])
-                context["item" + str(item_no)] = {}
+                item = "item" + str(item_no)
+                context[item] = {}
                 item_quantity = int(request.POST["item" + str(item_no)])
-                context["item" + str(item_no)]["item" + str(item_no)] = item_quantity
+                context["item" + str(item_no)]["item_quantity"] = item_quantity
                 item_desc = request.POST["item" + str(item_no) + "-descr"]
-                context["item" + str(item_no)][
-                    "item" + str(item_no) + "-descr"
-                ] = item_desc
+                context["item" + str(item_no)]["item_descr"] = item_desc
                 item_price = float(request.POST["price" + str(item_no)])
-                context["item" + str(item_no)]["price" + str(item_no)] = item_price
+                context["item" + str(item_no)]["price"] = item_price
                 imported = check_imported(item_desc)
                 if check_book(item_desc):
                     total_tax = total_tax + calculate_tax(
@@ -36,14 +35,22 @@ def add_items(request):
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "others"
                     )
-                total_price = total_price + item_price
-        print(total_price + total_tax)
+                total_price = total_price + item_quantity * item_price
         print(total_tax)
         print(total_price)
-        context["total_price"] = total_price
-        context["total_tax"] = total_tax
+        print(total_price + total_tax)
+        # context["total_price"] = round((total_price + total_tax) / 0.05) * 0.05
+        # context["total_tax"] = round(round(total_tax / 0.05) * 0.05, 2)
         print(context)
-        return render(request, "result.html", context)
+        return render(
+            request,
+            "result.html",
+            {
+                "context": context,
+                "total_tax": round(round(total_tax / 0.05) * 0.05, 2),
+                "total_price": round(round((total_price + total_tax) / 0.05) * 0.05, 2),
+            },
+        )
     return render(request, "index.html")
 
 

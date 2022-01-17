@@ -1,20 +1,43 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load value %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/result-style.css' %}" rel="stylesheet">
     <title>Results</title>
 </head>
 
 <body>
-    <!-- {% for item in context %} -->
-    <!-- <h1></h1> -->
-    <h1> {{ total_price }} </h1>
-    <h1>{{ total_tax }} </h1>
-    <!-- {% endfor %} -->
+    <div class="container">
+        <div class="item-description">
+            Item-name
+        </div>
+        <div class="price">
+            Price
+        </div>
+    </div>
+    <div class="main-container">
+        {% for key,value in context.items %}
+        <div class="container">
+            <div class="item-description">
+                {{ value.item_descr }}
+            </div>
+            <div class="price">
+                {{ value.price }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="total-tax">
+            Total-tax: &emsp; {{ total_tax }}
+        </div>
+        <div class="total-price">
+            Total-price: &emsp; {{ total_price }}
+        </div>
+    </div>
 </body>
 
 </html>
