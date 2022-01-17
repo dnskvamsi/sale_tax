@@ -17,3 +17,13 @@
   margin: 0px 20%;
   text-align: center;
 }
+
+.print button {
+  margin: 20px 20%;
+  padding: 0.5em 1em;
+  background-color: rgb(34, 143, 227);
+  border: 0px;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+}

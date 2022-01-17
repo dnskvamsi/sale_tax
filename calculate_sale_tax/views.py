@@ -19,10 +19,14 @@ def add_items(request):
                 item_price = float(request.POST["price" + str(item_no)])
                 context["item" + str(item_no)]["price"] = item_price
                 imported = check_imported(item_desc)
+                # print("total-tax-before:", total_tax)
                 if check_book(item_desc):
+                    print("inside-book", total_tax)
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "book"
                     )
+                    print("inside-book", total_tax)
+
                 elif check_food(item_desc):
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "food"
@@ -35,12 +39,12 @@ def add_items(request):
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "others"
                     )
+                print("total-tax", total_tax)
                 total_price = total_price + item_quantity * item_price
+                print("total-price", total_price)
         print(total_tax)
         print(total_price)
         print(total_price + total_tax)
-        # context["total_price"] = round((total_price + total_tax) / 0.05) * 0.05
-        # context["total_tax"] = round(round(total_tax / 0.05) * 0.05, 2)
         print(context)
         return render(
             request,
@@ -48,14 +52,16 @@ def add_items(request):
             {
                 "context": context,
                 "total_tax": round(round(total_tax / 0.05) * 0.05, 2),
-                "total_price": round(round((total_price + total_tax) / 0.05) * 0.05, 2),
+                "total_price": round(round(total_tax / 0.05) * 0.05, 2) + total_price,
+                # "total_price": round(round((total_price + total_tax) / 0.05) * 0.05, 2),
             },
         )
     return render(request, "index.html")
 
 
 def check_imported(value):
-    if value.lower().find("imported"):
+    print(value)
+    if value.lower().find("imported") != -1:
         return True
     else:
         return False
