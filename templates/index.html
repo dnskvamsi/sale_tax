@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/index-style.css' %}" rel="stylesheet">
+    <title>Items Form</title>
+</head>
+
+<body>
+    <header>
+        <h3 class="heading"> Sales Tax Calculator </h3>
+    </header>
+    <section class="item-details">
+        <h1> Item Details</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Quantity</label>
+            <label>Item Description</label>
+            <label>Shelf Price</label>
+            <div class="container">
+                <div class="item1">
+                    <input type="number" name="item1" value="">
+                    <input type="item-description" name="item1-descr" value="">
+                    <input type="text" name="price1" value="">
+                </div>
+                <div class="item2">
+                    <input type="number" name="item2" value="">
+                    <input type="item-description" name="item2-descr" value="">
+                    <input type="text" name="price2" value="">
+                </div>
+                <div class="item3">
+                    <input type="number" name="item3" value="">
+                    <input type="item-description" name="item3-descr" value="">
+                    <input type="text" name="price3" value="">
+                </div>
+                <div class="item4">
+                    <input type="number" name="item4" value="">
+                    <input type="item-description" name="item4-descr" value="">
+                    <input type="text" name="price4" value="">
+                </div>
+            </div>
+            <input type="submit">
+        </form>
+    </section>
+</body>
+
+</html>
