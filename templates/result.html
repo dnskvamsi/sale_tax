@@ -9,16 +9,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'css/result-style.css' %}" rel="stylesheet">
     <script src="{% static 'js/print.js' %}"></script>
+    <script src="{% static 'js/conversion.js' %}"></script>
     <title>Results</title>
 </head>
 
 <body>
+    <div class="convert">
+        <select id="select-value" onchange="convert()">
+            <option value="EUR" id="EUR" class="active">EUR</option>
+            <option value="USD" id="USD">USD</option>
+            <option value="INR" id="INR">INR</option>
+        </select>
+    </div>
     <div class="container">
-        <div class="item-description">
+        <div class="item-description1">
             Item-name
         </div>
-        <div class="price">
+        <div class="price1">
             Price
+        </div>
+        <div class="tax1">
+            Tax
         </div>
     </div>
     <div class="main-container">
@@ -27,16 +38,19 @@
             <div class="item-description">
                 {{ value.item_descr }}
             </div>
-            <div class="price">
+            <div class="price change" value="{{ value.price }}">
                 {{ value.price }}
+            </div>
+            <div class="tax change" value="{{ value.tax }}">
+                {{ value.tax }}
             </div>
         </div>
         {% endfor %}
-        <div class="total-tax">
-            Total-tax: &emsp; {{ total_tax }}
+        <div class="total-tax-desc">
+            Total-tax: &emsp; <span class="total-tax change" value="{{ total_tax }}">{{ total_tax }}</span>
         </div>
-        <div class="total-price">
-            Total-price: &emsp; {{ total_price }}
+        <div class="total-price-desc">
+            Total-price: &emsp; <span class="total-price change" value="{{ total_price }}">{{ total_price }}</span>
         </div>
     </div>
     <div class="print" onclick="printScreen(event)">

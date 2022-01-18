@@ -1,6 +1,9 @@
 html {
   background-color: rgb(230, 230, 230);
 }
+header {
+  text-align: center;
+}
 .container {
   display: grid;
   margin: 0px 20%;
@@ -32,4 +35,8 @@ input[type="submit"] {
   padding: 0.5em 1.5em 0.5em 1.5em;
   background-color: rgb(34, 143, 227);
   height: auto;
+}
+
+h1 {
+  margin: 20px 20%;
 }

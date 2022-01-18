@@ -21,21 +21,33 @@ def add_items(request):
                 imported = check_imported(item_desc)
                 # print("total-tax-before:", total_tax)
                 if check_book(item_desc):
-                    print("inside-book", total_tax)
+                    context["item" + str(item_no)]["tax"] = calculate_tax(
+                        item_quantity * item_price, imported, "book"
+                    )
+                    # print("inside-book", total_tax)
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "book"
                     )
-                    print("inside-book", total_tax)
+                    # print("inside-book", total_tax)
 
                 elif check_food(item_desc):
+                    context["item" + str(item_no)]["tax"] = calculate_tax(
+                        item_quantity * item_price, imported, "food"
+                    )
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "food"
                     )
                 elif check_medical(item_desc):
+                    context["item" + str(item_no)]["tax"] = calculate_tax(
+                        item_quantity * item_price, imported, "medical"
+                    )
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "medical"
                     )
                 else:
+                    context["item" + str(item_no)]["tax"] = calculate_tax(
+                        item_quantity * item_price, imported, "others"
+                    )
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "others"
                     )
@@ -97,4 +109,4 @@ def calculate_tax(price, imported_or_not, category):
         tax = tax + price * 0.05
     if category == "others":
         tax = tax + price * 0.1
-    return tax
+    return round(round(tax / 0.05) * 0.05, 2)

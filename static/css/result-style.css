@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr;
   margin: 0px 20%;
   text-align: center;
   row-gap: 20px;
@@ -12,10 +12,12 @@
   margin-top: 30px;
 }
 
-.total-tax,
-.total-price {
+.total-tax-desc,
+.total-price-desc {
   margin: 0px 20%;
   text-align: center;
+  font-weight: 500;
+  font-size: large;
 }
 
 .print button {
@@ -26,4 +28,22 @@
   border-radius: 5px;
   text-align: center;
   color: white;
+}
+
+.convert {
+  margin: 20px 20%;
+  text-align: right;
+}
+
+.item-description1,
+.price1,
+.tax1 {
+  font-weight: 700;
+  font-size: large;
+}
+
+select {
+  height: 30px;
+  border: 0.5px;
+  border-radius: 10px;
 }
