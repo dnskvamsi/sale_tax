@@ -1,9 +1,25 @@
+html {
+  background-color: rgb(230, 230, 230);
+  font-family: sans-serif;
+}
+header {
+  text-align: center;
+}
+
+section {
+  background-color: white;
+  margin: 40px 20%;
+  border-radius: 35px;
+  padding: 20px 35px;
+}
+
 .container {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  margin: 0px 20%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  /* margin: 0px 20%; */
   text-align: center;
   row-gap: 20px;
+  column-gap: 10px;
 }
 
 .main-container {
@@ -12,16 +28,24 @@
   margin-top: 30px;
 }
 
+.main-container div.container:nth-of-type(even) {
+  color: #009879;
+}
+.main-container div.container:nth-of-type(odd) {
+  color: #324960;
+}
+
 .total-tax-desc,
 .total-price-desc {
-  margin: 0px 20%;
+  /* margin: 0px 20%; */
   text-align: center;
-  font-weight: 500;
+  font-weight: 900;
+  color: #324960;
   font-size: large;
 }
 
 .print button {
-  margin: 20px 20%;
+  margin: 20px 0px;
   padding: 0.5em 1em;
   background-color: rgb(34, 143, 227);
   border: 0px;
@@ -31,19 +55,28 @@
 }
 
 .convert {
-  margin: 20px 20%;
+  margin: 20px 0px;
+  /* margin: 20px 20%; */
   text-align: right;
 }
 
 .item-description1,
 .price1,
-.tax1 {
-  font-weight: 700;
+.tax1,
+.item-total {
+  font-weight: 500;
   font-size: large;
+  /* border: 1px solid black; */
+  background-color: #009879;
+  padding: 0.3em;
+  color: white;
+  border-radius: 10px;
 }
 
 select {
   height: 30px;
   border: 0.5px;
   border-radius: 10px;
+  background-color: #324960;
+  color: white;
 }

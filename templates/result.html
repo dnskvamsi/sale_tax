@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load value %}
+{% load add %}
 <html lang="en">
 
 <head>
@@ -14,48 +14,60 @@
 </head>
 
 <body>
-    <div class="convert">
-        <select id="select-value" onchange="convert()">
-            <option value="EUR" id="EUR" class="active">EUR</option>
-            <option value="USD" id="USD">USD</option>
-            <option value="INR" id="INR">INR</option>
-        </select>
-    </div>
-    <div class="container">
-        <div class="item-description1">
-            Item-name
+    <header>
+        <h3 class="heading"> Sales Tax Calculator </h3>
+    </header>
+    <hr>
+    <section class="result">
+        <div class="convert">
+            <select id="select-value" onchange="convert()">
+                <option value="EUR" id="EUR" class="active">EUR</option>
+                <option value="USD" id="USD">USD</option>
+                <option value="INR" id="INR">INR</option>
+            </select>
         </div>
-        <div class="price1">
-            Price
-        </div>
-        <div class="tax1">
-            Tax
-        </div>
-    </div>
-    <div class="main-container">
-        {% for key,value in context.items %}
         <div class="container">
-            <div class="item-description">
-                {{ value.item_descr }}
+            <div class="item-description1">
+                Item-name
             </div>
-            <div class="price change" value="{{ value.price }}">
-                {{ value.price }}
+            <div class="price1">
+                Price
             </div>
-            <div class="tax change" value="{{ value.tax }}">
-                {{ value.tax }}
+            <div class="tax1">
+                Tax
+            </div>
+            <div class="item-total">
+                Total Price of Item
             </div>
         </div>
-        {% endfor %}
-        <div class="total-tax-desc">
-            Total-tax: &emsp; <span class="total-tax change" value="{{ total_tax }}">{{ total_tax }}</span>
+        <div class="main-container">
+            {% for key,value in context.items %}
+            <div class="container">
+                <div class="item-description">
+                    {{ value.item_descr }}
+                </div>
+                <div class="price change" value="{{ value.price }}">
+                    {{ value.price }}
+                </div>
+                <div class="tax change" value="{{ value.tax }}">
+                    {{ value.tax }}
+                </div>
+                <div class="total change" value="{{ value.total }}">
+                    {{ value.total }}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="total-tax-desc">
+                Total-tax: &emsp; <span class="total-tax change" value="{{ total_tax }}">{{ total_tax }}</span>
+            </div>
+            <div class="total-price-desc">
+                Total-price: &emsp; <span class="total-price change" value="{{ total_price }}">{{ total_price }}</span>
+            </div>
         </div>
-        <div class="total-price-desc">
-            Total-price: &emsp; <span class="total-price change" value="{{ total_price }}">{{ total_price }}</span>
+        <div class="print">
+            <button onclick="printScreen(event)">Generate PDF</button>
         </div>
-    </div>
-    <div class="print" onclick="printScreen(event)">
-        <button>Generate PDF</button>
-    </div>
+    </section>
 </body>
 
 </html>

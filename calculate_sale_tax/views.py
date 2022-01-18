@@ -19,17 +19,13 @@ def add_items(request):
                 item_price = float(request.POST["price" + str(item_no)])
                 context["item" + str(item_no)]["price"] = item_price
                 imported = check_imported(item_desc)
-                # print("total-tax-before:", total_tax)
                 if check_book(item_desc):
                     context["item" + str(item_no)]["tax"] = calculate_tax(
                         item_quantity * item_price, imported, "book"
                     )
-                    # print("inside-book", total_tax)
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "book"
                     )
-                    # print("inside-book", total_tax)
-
                 elif check_food(item_desc):
                     context["item" + str(item_no)]["tax"] = calculate_tax(
                         item_quantity * item_price, imported, "food"
@@ -48,9 +44,16 @@ def add_items(request):
                     context["item" + str(item_no)]["tax"] = calculate_tax(
                         item_quantity * item_price, imported, "others"
                     )
+                    # context["item" + str(item_no)]["total"] = (
+                    #     calculate_tax(item_quantity * item_price, imported, "others")
+                    #     + item_quantity * item_price
+                    # )
                     total_tax = total_tax + calculate_tax(
                         item_quantity * item_price, imported, "others"
                     )
+                context["item" + str(item_no)]["total"] = (
+                    context["item" + str(item_no)]["tax"] + item_quantity * item_price
+                )
                 print("total-tax", total_tax)
                 total_price = total_price + item_quantity * item_price
                 print("total-price", total_price)
