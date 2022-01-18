@@ -1,5 +1,5 @@
 function convert() {
-    fetch("http://data.fixer.io/api/latest?access_key=93cae40df10b0521f99e1271a38794b9&base=EUR&symbols=INR,USD")
+    fetch("https://data.fixer.io/api/latest?access_key=93cae40df10b0521f99e1271a38794b9&base=EUR&symbols=INR,USD")
         .then(response => response.json())
         .then(data => {
             if (document.getElementById("select-value").value === "USD") {
