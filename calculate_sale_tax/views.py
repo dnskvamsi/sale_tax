@@ -1,8 +1,15 @@
+from tkinter import N
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.conf import settings
+import os
 
 
 class Tax:
+    food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
+    medical_items = ["tablets", "capsules", "syrup"]
+    book_items = ["book"]
+
     def __init__(self, item_desc, price):
         self.value = item_desc
         self.price = price
@@ -13,32 +20,42 @@ class Tax:
         else:
             return False
 
-    def check_food(self):
-        food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
-        for item in food_items:
+    def check(self, items):
+        for item in items:
             if self.value.lower().find(item) != -1:
                 return True
         return False
 
-    def check_medical(self):
-        medical_items = ["tablets", "capsules", "syrup"]
-        for item in medical_items:
-            if self.value.lower().find(item) != -1:
-                return True
-        return False
+    # def check_food(self):
+    #     food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
+    #     for item in food_items:
+    #         if self.value.lower().find(item) != -1:
+    #             return True
+    #     return False
 
-    def check_book(self):
-        book_items = ["book"]
-        for item in book_items:
-            if self.value.lower().find(item) != -1:
-                return True
-        return False
+    # def check_medical(self):
+    #     medical_items = ["tablets", "capsules", "syrup"]
+    #     for item in medical_items:
+    #         if self.value.lower().find(item) != -1:
+    #             return True
+    #     return False
+
+    # def check_book(self):
+    #     book_items = ["book"]
+    #     for item in book_items:
+    #         if self.value.lower().find(item) != -1:
+    #             return True
+    #     return False
 
     def calculate(self):
         tax = 0
         if self.check_imported():
             tax = tax + self.price * 0.05
-        if not (self.check_book() or self.check_medical() or self.check_food()):
+        if not (
+            self.check(self.book_items)
+            or self.check(self.medical_items)
+            or self.check(self.food_items)
+        ):
             tax = tax + self.price * 0.1
             return round(round(tax / 0.05) * 0.05, 2)
         else:
@@ -79,6 +96,21 @@ def add_items(request):
         for item in items:
             total_tax = total_tax + item.item_tax
             total_price = total_price + item.item_total
+        for folder in settings.STATICFILES_DIRS:
+            javascript_files = os.listdir(folder + "/js")
+        all_plugins = []
+        for js_file in filter(
+            lambda x: x.startswith("plug-") and x.endswith(".js"), javascript_files
+        ):
+            name_of_plug = js_file.replace("plug-", "")
+            name_of_plug = name_of_plug.replace(".js", "")
+            all_plugins.append(name_of_plug)
+        javascript_files_path = []
+        for js_file in javascript_files:
+            javascript_files_path.append(
+                os.path.join(os.path.join("/static", "js"), js_file)
+            )
+        print(javascript_files_path)
         return render(
             request,
             "result-test.html",
@@ -86,6 +118,8 @@ def add_items(request):
                 "context": items,
                 "total_tax": round(round(total_tax / 0.05) * 0.05, 2),
                 "total_price": total_price,
+                "plugins": all_plugins,
+                "paths": javascript_files_path,
             },
         )
     return render(request, "index.html")

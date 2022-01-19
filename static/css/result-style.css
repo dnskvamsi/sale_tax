@@ -28,11 +28,65 @@ section {
   margin-top: 30px;
 }
 
-.main-container div.container:nth-of-type(even) {
+.main-container div.container:nth-of-type(even),
+tbody tr:nth-of-type(even) {
   color: #009879;
 }
-.main-container div.container:nth-of-type(odd) {
+.main-container div.container:nth-of-type(odd),
+tbody tr:nth-of-type(odd) {
   color: #324960;
+}
+
+td {
+  text-align: center;
+}
+table {
+  margin: auto;
+  display: grid;
+  row-gap: 20px;
+}
+tbody {
+  display: grid;
+  row-gap: 10px;
+}
+
+table thead tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  row-gap: 20px;
+  column-gap: 10px;
+  text-align: center;
+}
+table thead tr th {
+  font-weight: 500;
+  font-size: medium;
+  /* border: 1px solid black; */
+  background-color: #009879;
+  padding: 0.3em;
+  color: white;
+  border-radius: 10px;
+}
+table tbody tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  row-gap: 20px;
+  column-gap: 10px;
+  text-align: center;
+}
+
+button.dt-button.buttons-pdf.buttons-html5,
+button.dt-button.buttons-excel.buttons-html5,
+button.dt-button.buttons-csv.buttons-html5,
+button.dt-button.buttons-copy.buttons-html5,
+button.dt-button.buttons-print {
+  margin: 20px 0px;
+  padding: 0.2em 1em;
+  background-color: rgb(34, 143, 227);
+  border: 0px;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  font-size: small;
 }
 
 .total-tax-desc,
@@ -52,6 +106,7 @@ section {
   border-radius: 5px;
   text-align: center;
   color: white;
+  /* display: none; */
 }
 
 .convert {
