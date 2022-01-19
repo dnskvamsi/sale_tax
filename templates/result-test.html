@@ -45,22 +45,22 @@
             </div>
         </div>
         <div class="main-container">
-            {% for key,value in context.items %}
+            {% for value in context %}
             <div class="container">
                 <div class="qty">
                     {{ value.qty }}
                 </div>
                 <div class="item-description">
-                    {{ value.item_descr }}
+                    {{ value.item_desc }}
                 </div>
-                <div class="price change" value="{{ value.price }}">
-                    {{ value.price }}
+                <div class="price change" value="{{ value.item_price }}">
+                    {{ value.item_price }}
                 </div>
-                <div class="tax change" value="{{ value.tax }}">
-                    {{ value.tax }}
+                <div class="tax change" value="{{ value.item_tax }}">
+                    {{ value.item_tax }}
                 </div>
-                <div class="total change" value="{{ value.total }}">
-                    {{ value.total }}
+                <div class="total change" value="{{ value.item_total }}">
+                    {{ value.item_total }}
                 </div>
             </div>
             {% endfor %}

@@ -1,115 +1,91 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+
+class Tax:
+    def __init__(self, item_desc, price):
+        self.value = item_desc
+        self.price = price
+
+    def check_imported(self):
+        if self.value.lower().find("imported") != -1:
+            return True
+        else:
+            return False
+
+    def check_food(self):
+        food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
+        for item in food_items:
+            if self.value.lower().find(item) != -1:
+                return True
+        return False
+
+    def check_medical(self):
+        medical_items = ["tablets", "capsules", "syrup"]
+        for item in medical_items:
+            if self.value.lower().find(item) != -1:
+                return True
+        return False
+
+    def check_book(self):
+        book_items = ["book"]
+        for item in book_items:
+            if self.value.lower().find(item) != -1:
+                return True
+        return False
+
+    def calculate(self):
+        tax = 0
+        if self.check_imported():
+            tax = tax + self.price * 0.05
+        if not (self.check_book() or self.check_medical() or self.check_food()):
+            tax = tax + self.price * 0.1
+            return round(round(tax / 0.05) * 0.05, 2)
+        else:
+            return round(round(tax / 0.05) * 0.05, 2)
+
+
+class Item:
+    def __init__(self, qty, item_desc, price):
+        self.qty = qty
+        self.item_desc = item_desc
+        self.price = price
+        self.item_price = self.qty * self.price
+        self.tax = Tax(self.item_desc, self.item_price)
+        self.item_tax = self.tax.calculate()
+        self.item_total = self.item_tax + self.item_price
+
+
 # Create your views here.
 def add_items(request):
     if request.method == "POST":
-        context = {}
+        count = 1
+        items = []
         total_tax = 0
         total_price = 0
-        for item_no in range(1, 5):
-            if request.POST["item" + str(item_no)] != "":
-                print(request.POST["item" + str(item_no)])
-                item = "item" + str(item_no)
-                context[item] = {}
-                item_quantity = int(request.POST["item" + str(item_no)])
-                context["item" + str(item_no)]["item_quantity"] = item_quantity
-                item_desc = request.POST["item" + str(item_no) + "-descr"]
-                context["item" + str(item_no)]["item_descr"] = item_desc
-                item_price = float(request.POST["price" + str(item_no)])
-                context["item" + str(item_no)]["price"] = item_price
-                imported = check_imported(item_desc)
-                if check_book(item_desc):
-                    context["item" + str(item_no)]["tax"] = calculate_tax(
-                        item_quantity * item_price, imported, "book"
-                    )
-                    total_tax = total_tax + calculate_tax(
-                        item_quantity * item_price, imported, "book"
-                    )
-                elif check_food(item_desc):
-                    context["item" + str(item_no)]["tax"] = calculate_tax(
-                        item_quantity * item_price, imported, "food"
-                    )
-                    total_tax = total_tax + calculate_tax(
-                        item_quantity * item_price, imported, "food"
-                    )
-                elif check_medical(item_desc):
-                    context["item" + str(item_no)]["tax"] = calculate_tax(
-                        item_quantity * item_price, imported, "medical"
-                    )
-                    total_tax = total_tax + calculate_tax(
-                        item_quantity * item_price, imported, "medical"
-                    )
-                else:
-                    context["item" + str(item_no)]["tax"] = calculate_tax(
-                        item_quantity * item_price, imported, "others"
-                    )
-                    # context["item" + str(item_no)]["total"] = (
-                    #     calculate_tax(item_quantity * item_price, imported, "others")
-                    #     + item_quantity * item_price
-                    # )
-                    total_tax = total_tax + calculate_tax(
-                        item_quantity * item_price, imported, "others"
-                    )
-                context["item" + str(item_no)]["total"] = (
-                    context["item" + str(item_no)]["tax"] + item_quantity * item_price
-                )
-                print("total-tax", total_tax)
-                total_price = total_price + item_quantity * item_price
-                print("total-price", total_price)
-        print(total_tax)
-        print(total_price)
-        print(total_price + total_tax)
-        print(context)
+        for key, value in request.POST.items():
+            if value == "":
+                break
+            if key.find("qty") != -1:
+                qty = value
+                count = count + 1
+            elif key.find("desc") != -1:
+                item_desc = value
+            elif key.find("price") != -1:
+                price = value
+                print(qty, item_desc, price)
+                ## Addeing Item objects to items list
+                items.append(Item(int(qty), item_desc, float(price)))
+        for item in items:
+            total_tax = total_tax + item.item_tax
+            total_price = total_price + item.item_total
         return render(
             request,
-            "result.html",
+            "result-test.html",
             {
-                "context": context,
+                "context": items,
                 "total_tax": round(round(total_tax / 0.05) * 0.05, 2),
-                "total_price": round(round(total_tax / 0.05) * 0.05, 2) + total_price,
-                # "total_price": round(round((total_price + total_tax) / 0.05) * 0.05, 2),
+                "total_price": total_price,
             },
         )
     return render(request, "index.html")
-
-
-def check_imported(value):
-    print(value)
-    if value.lower().find("imported") != -1:
-        return True
-    else:
-        return False
-
-
-def check_food(value):
-    food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
-    for item in food_items:
-        if value.lower().find(item) != -1:
-            return True
-    return False
-
-
-def check_medical(value):
-    medical_items = ["tablets", "capsules", "syrup"]
-    for item in medical_items:
-        if value.lower().find(item) != -1:
-            return True
-    return False
-
-
-def check_book(value):
-    book_items = ["book"]
-    for item in book_items:
-        if value.lower().find(item) != -1:
-            return True
-    return False
-
-
-def calculate_tax(price, imported_or_not, category):
-    tax = 0
-    if imported_or_not:
-        tax = tax + price * 0.05
-    if category == "others":
-        tax = tax + price * 0.1
-    return round(round(tax / 0.05) * 0.05, 2)
