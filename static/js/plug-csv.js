@@ -30,7 +30,7 @@ function csv() {
     var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
 
     // Specify file name
-    filename = filename ? filename + '.csv' : 'document.csv';
+    filename = filename ? filename + '.doc' : 'document.doc';
 
     // Create download link element
     var downloadLink = document.createElement("a");
