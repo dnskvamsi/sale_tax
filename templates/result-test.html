@@ -78,7 +78,7 @@
             <!-- <button onclick="printScreen(event)">Generate PDF</button> -->
             <!-- <button onclick="a"> Generate Word</button> -->
             {% for plug in plugins %}
-            <button onclick="{{ plug }}">Generate {{plug}}</button>
+            <button onclick="{{ plug }}()">Generate {{plug}}</button>
             {% endfor %}
         </div>
     </section>
