@@ -41,7 +41,7 @@ label {
   column-gap: 20px;
 }
 input[type="number"] {
-  width: 50px;
+  width: 50%;
   margin: auto;
 }
 

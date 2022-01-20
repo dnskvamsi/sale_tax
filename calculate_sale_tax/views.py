@@ -2,80 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 import os
-
-
-class Tax:
-    food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
-    medical_items = ["tablets", "capsules", "syrup"]
-    book_items = ["book"]
-
-    def __init__(self, item_desc, price):
-        self.value = item_desc
-        self.price = price
-
-    def check_imported(self):
-        if self.value.lower().find("imported") != -1:
-            return True
-        else:
-            return False
-
-    def check(self, items):
-        for item in items:
-            if self.value.lower().find(item) != -1:
-                return True
-        return False
-
-    # def check_food(self):
-    #     food_items = ["chocolate", "waffles", "cakes", "chips", "soft drink"]
-    #     for item in food_items:
-    #         if self.value.lower().find(item) != -1:
-    #             return True
-    #     return False
-
-    # def check_medical(self):
-    #     medical_items = ["tablets", "capsules", "syrup"]
-    #     for item in medical_items:
-    #         if self.value.lower().find(item) != -1:
-    #             return True
-    #     return False
-
-    # def check_book(self):
-    #     book_items = ["book"]
-    #     for item in book_items:
-    #         if self.value.lower().find(item) != -1:
-    #             return True
-    #     return False
-
-    def calculate(self):
-        tax = 0
-        if self.check_imported():
-            tax = tax + self.price * 0.05
-        if not (
-            self.check(self.book_items)
-            or self.check(self.medical_items)
-            or self.check(self.food_items)
-        ):
-            tax = tax + self.price * 0.1
-            return round(round(tax / 0.05) * 0.05, 2)
-        else:
-            return round(round(tax / 0.05) * 0.05, 2)
-
-
-class Item:
-    def __init__(self, qty, item_desc, price):
-        self.qty = qty
-        self.item_desc = item_desc
-        self.price = price
-        self.item_price = self.qty * self.price
-        self.tax = Tax(self.item_desc, self.item_price)
-        self.item_tax = self.tax.calculate()
-        self.item_total = self.item_tax + self.item_price
-
+from .utils.items import Item
+from .utils.tax import Tax
 
 # Create your views here.
 def add_items(request):
     if request.method == "POST":
-        count = 1
+        count = 0
         items = []
         total_tax = 0
         total_price = 0
@@ -87,10 +20,12 @@ def add_items(request):
                 count = count + 1
             elif key.find("desc") != -1:
                 item_desc = value
+                count = count + 1
             elif key.find("price") != -1:
                 price = value
-                print(qty, item_desc, price)
-                ## Addeing Item objects to items list
+                ## Adding Item objects to items list
+                count = count + 1
+                # if count % 3 == 0:
                 items.append(Item(int(qty), item_desc, float(price)))
         for item in items:
             total_tax = total_tax + item.item_tax
